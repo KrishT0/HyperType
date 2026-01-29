@@ -5,6 +5,7 @@ import random
 def generate_words(word_count: int):
     """
     Generate a string of random words separated by spaces.
+
     Args:
         word_count (int): The number of words to generate.
     Returns:
