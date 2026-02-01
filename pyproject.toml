@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "pyinstaller>=6.18.0",
     "pynput>=1.8.1",
     "typer>=0.21.1",
 ]

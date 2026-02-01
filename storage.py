@@ -61,8 +61,3 @@ class ResultsStorage:
             "best_wpm": round(best_wpm, 2),
             "best_accuracy": round(best_accuracy, 2),
         }
-
-    def get_recent_results(self, count: int = 10):
-        """Get the most recent results"""
-        results = self.load_results()
-        return results[-count:] if results else []

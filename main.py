@@ -27,7 +27,7 @@ Features:
 Start typing. Start improving.
 
 Commands:
-    hypertype start <mode>  - Start a typing test (15, 30, or 60 seconds)
+    hypertype start <mode>  - Start a typing test (5, 10, 15, 30, or 60... seconds)
     hypertype stats         - View your statistics
     """)
 

@@ -30,7 +30,7 @@ def generate_words(word_count: int):
         "microservice",
         "distributed",
     ]
-    return " ".join(random.choices(random_words, k=word_count))
+    return " ".join(random.choices(random_words, k=(word_count + 20)))
 
 
 def clear_terminal():

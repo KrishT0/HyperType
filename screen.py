@@ -1,6 +1,6 @@
 import platform
 import sys
-from time import time
+from time import sleep, time
 
 from pynput import keyboard
 from rich.align import Align
@@ -24,6 +24,7 @@ class TypingScreen:
         self.old_settings = None
         self.start_time: float = 0.0
         self.end_time: float = 0.0
+        self.test_started = False
 
     def create_display_text(self):
         """Create colored text based on what user has typed"""
@@ -53,8 +54,11 @@ class TypingScreen:
         display_text = self.create_display_text()
         padded_obj = Padding(display_text, (0, 5), expand=False)
 
-        # Footer with timer
-        footer_obj = Text(f"Time: {remaining}s", style="dim")
+        # Footer with timer or waiting message
+        if not self.test_started:
+            footer_obj = Text("Press any key to start...", style="yellow dim")
+        else:
+            footer_obj = Text(f"Time: {remaining}s", style="dim")
 
         layout["main"].update(Align.center(padded_obj, vertical="middle"))
         layout["footer"].update(Align.center(footer_obj))
@@ -63,6 +67,11 @@ class TypingScreen:
 
     def on_press(self, key):
         """Handle keyboard input"""
+        # Start the test on first keypress
+        if not self.test_started:
+            self.test_started = True
+            self.start_time = time()
+
         # Handle backspace
         if key == keyboard.Key.backspace:
             if self.typed_text:
@@ -77,12 +86,18 @@ class TypingScreen:
         # Handle space
         if key == keyboard.Key.space:
             self.typed_text += " "
+            # Check if user finished typing
+            if len(self.typed_text) >= len(self.words):
+                self.running = False
             return
 
         # Handle regular character keys
         try:
             if hasattr(key, "char") and key.char is not None:
                 self.typed_text += key.char
+                # Check if user finished typing
+                if len(self.typed_text) >= len(self.words):
+                    self.running = False
         except AttributeError:
             pass
 
@@ -146,8 +161,6 @@ class TypingScreen:
             listener = keyboard.Listener(on_press=self.on_press, suppress=True)
             listener.start()
 
-            self.start_time = time()
-
             # Use Live to update without scrolling
             with Live(
                 self.create_layout(self.duration),
@@ -156,6 +169,13 @@ class TypingScreen:
                 refresh_per_second=10,
             ) as live:
                 while self.running:
+                    # If test hasn't started yet, just keep showing waiting message
+                    if not self.test_started:
+                        live.update(self.create_layout(self.duration))
+                        sleep(0.1)
+                        continue
+
+                    # Calculate elapsed time (only after test started)
                     elapsed = time() - self.start_time
                     remaining = self.duration - int(elapsed)
 
@@ -184,7 +204,13 @@ class TypingScreen:
 
         # Show completion message
         console.clear()
-        console.print("[bold green]Time's up![/bold green]\n")
+
+        # Check if user finished early or time ran out
+        if len(self.typed_text) >= len(self.words):
+            console.print("[bold green]Completed![/bold green]\n")
+        else:
+            console.print("[bold yellow]Time's up![/bold yellow]\n")
+
         console.print(f"[cyan]WPM:[/cyan] [bold]{results['wpm']}[/bold]")
         console.print(f"[cyan]Accuracy:[/cyan] [bold]{results['accuracy']}%[/bold]")
         console.print(
@@ -228,9 +254,10 @@ def render_stats(username):
         print("No stats found. Start typing to build history 🚀")
         return
 
-    print(f"{username} Stats: ")
+    print(f"{username} Stats ")
+    print("________________________")
     print(f"{'Typing Sessions':<20}: {stats['total_tests']}")
     print(f"{'Average Speed':<20}: {stats['avg_wpm']} WPM")
-    print(f"{'Average Accuracy':<20}: {stats['avg_accuracy']}%")
-    print(f"{'Top Speed':<20}: {stats['best_wpm']}WPM")
-    print(f"{'Best Accuracy':<20}: {stats['best_accuracy']}%")
+    print(f"{'Average Accuracy':<20}: {stats['avg_accuracy']} %")
+    print(f"{'Top Speed':<20}: {stats['best_wpm']} WPM")
+    print(f"{'Best Accuracy':<20}: {stats['best_accuracy']} %")
