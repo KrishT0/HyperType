@@ -59,7 +59,8 @@ jobs:
         run: |
           mv dist/hypertype dist/${{ matrix.output-name }}
 
-      - name: Upload to Release
+      # Upload binary to release
+      - name: Upload Binary to Release
         uses: softprops/action-gh-release@v2
         with:
           files: dist/${{ matrix.output-name }}
