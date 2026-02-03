@@ -1,10 +1,10 @@
 # ============================================================
 #   HyperType - Windows Installer (PowerShell)
 #   Usage:
-#     powershell -Command "Invoke-WebRequest -Uri https://raw.githubusercontent.com/yourusername/hypertype/main/install.ps1 -OutFile install.ps1; .\install.ps1; Remove-Item install.ps1"
+#     powershell -Command "Invoke-WebRequest -Uri https://raw.githubusercontent.com/KrishT0/hypertype/main/install.ps1 -OutFile install.ps1; .\install.ps1; Remove-Item install.ps1"
 # ============================================================
 
-$REPO = "yourusername/hypertype"
+$REPO = "KrishT0/hypertype"
 $INSTALL_DIR = "$env:LOCALAPPDATA\Programs\hypertype"
 $BINARY_NAME = "hypertype.exe"
 $DOWNLOAD_URL = "https://github.com/$REPO/releases/latest/download/hypertype-windows.exe"

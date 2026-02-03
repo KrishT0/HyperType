@@ -2,12 +2,12 @@
 # ============================================================
 #   HyperType - Linux/macOS Installer
 #   Usage:
-#     curl -sSL https://raw.githubusercontent.com/yourusername/hypertype/main/install.sh | bash
+#     curl -sSL https://raw.githubusercontent.com/KrishT0/hypertype/main/install.sh | bash
 # ============================================================
 
 set -e
 
-REPO="yourusername/hypertype"
+REPO="KrishT0/hypertype"
 INSTALL_DIR="/usr/local/bin"
 BINARY_NAME="hypertype"
 
