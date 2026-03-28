@@ -74,6 +74,19 @@ hypertype stats
 
 ---
 
+## ⚠️ Compatibility
+
+This tool will **not work** in the following environments:
+
+- **SSH sessions** without X forwarding
+- **Headless servers**
+- **Some terminal emulators**
+- **WSL** without X11 configured
+
+Make sure you have a terminal with full interactive keyboard input support and display capabilities.
+
+---
+
 ## 📊 Results & Storage
 
 After every test, your results are saved automatically.
